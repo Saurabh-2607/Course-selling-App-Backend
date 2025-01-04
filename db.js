@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const userSchema = new schema({
-    _id : schema.Types.ObjectId,
     firstname : {type : String, required : true},
     lastname : {type : String, required : true},
     email : {type : String, required : true, unique : true},
@@ -10,7 +9,6 @@ const userSchema = new schema({
 });
 
 const adminSchema = new schema({
-    _id : schema.Types.ObjectId,
     firstname : {type : String, required : true},
     lastname : {type : String, required : true},
     email : {type : String, required : true, unique : true},
@@ -18,28 +16,38 @@ const adminSchema = new schema({
 });
 
 const courseSchema = new schema({
-    _id : schema.Types.ObjectId,
     title : {type : String, required : true},
     description : {type : String, required : true},
     price : {type : Number, required : true},
-    imaegurl : {type : String, required : true},
-    creatorId : {type : schema.Types.ObjectId, required : true}
+    imageurl : {type : String, required : true},
+    creatorId : {type : schema.Types.ObjectId,required : true, ref : 'admin'}
 });
 
 const purchaseSchema = new schema({
-    _id : schema.Types.ObjectId,
     userId : {type : schema.Types.ObjectId, required : true},
     courseId : {type : schema.Types.ObjectId, required : true}
 });
+
+const deletedcourseSchema = new schema({
+    title : {type : String, required : true},
+    description : {type : String, required : true},
+    price : {type : Number, required : true},
+    imageurl : {type : String, required : true},
+    deleterId : {type : schema.Types.ObjectId,required : true, ref : 'admin'}
+});
+
 
 const user = mongoose.model('user', userSchema);
 const admin = mongoose.model('admin', adminSchema);
 const course = mongoose.model('course', courseSchema);
 const purchase = mongoose.model('purchase', purchaseSchema);
+const deletedcourse = mongoose.model('deletedcourse', deletedcourseSchema);
 
 module.exports = {
-    user : user,
-    admin : admin,
-    course : course,
-    purchase : purchase
-}
+    user: user,
+    admin: admin,
+    course: course,
+    purchase: purchase,
+    deletedcourse: deletedcourse
+};
+
